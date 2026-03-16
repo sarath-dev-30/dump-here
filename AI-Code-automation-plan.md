@@ -385,21 +385,3 @@ Say this:
 > Each markdown file defines an AI agent role.
 > Copilot reads the documentation, builds the UI feature by feature, validates the code, and commits automatically to git.
 
----
-
-# 16. One Small Trick That Makes the Demo 10x Better
-
-Before demo:
-
-Create empty commit:
-
-```
-git init
-git commit --allow-empty -m "initial project setup"
-```
-
-Then the **AI commits will appear clearly in history**.
-
----
-
-# If you want, I can also give you **one final secret trick** that makes Copilot behave **10× more reliably with these agents**, so your demo **does not fail tomorrow**.
