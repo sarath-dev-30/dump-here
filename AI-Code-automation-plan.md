@@ -385,3 +385,16 @@ Say this:
 > Each markdown file defines an AI agent role.
 > Copilot reads the documentation, builds the UI feature by feature, validates the code, and commits automatically to git.
 
+
+final prompt
+
+Read all documentation inside .context, .agents and .workflow.
+
+Follow the workflow defined in .workflow/master-workflow.md.
+
+Implement features sequentially from product-requirements.md.
+
+After completing each feature, commit and push using gitops-agent.
+
+enire project should be created in a diffrent folder, keep the ai-ui-autopilot folder untouched
+
