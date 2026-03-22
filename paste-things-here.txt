@@ -1,18 +1,182 @@
-unit test cases agent - 
-you are an expert in writing unit test cases for react js with typescript project
-you will use jets and recat testing library
+Automating Code Development from Jira Stories
+This is an ambitious project—essentially building an AI-powered software development pipeline. Let me break down everything you need.
+Architecture Overview
 
 
-architect agent - 
-
-you will take care of the complete Ui architecture best practices
-communicate to the developer agents
 
 
-SDLC agent - 
 
-You will take crae of the sofatware devlopement life cycles process and come up with the plan and talk to architect agent
 
-overview agent-
 
-you will overview the code that is being developed whether the agents are following the standard best practices
+External Services
+Orchestration Layer
+UI Application
+Sprint Dropdown
+Story Selector
+Story Parser
+Code Generator
+Test Generator
+Code Validator
+Jira API
+LLM / AI Agent
+Bitbucket API
+Step-by-Step Implementation
+1. Jira Integration
+What you need:
+Jira API token (from your Atlassian account settings)
+Jira Cloud REST API or Jira Server API access
+Key API calls:
+python
+
+
+# Fetch stories from current sprint
+GET /rest/agile/1.0/board/{boardId}/sprint/{sprintId}/issue
+# Get story details (acceptance criteria, description)
+GET /rest/api/3/issue/{issueKey}
+Data to extract from each story:
+Title and description
+Acceptance criteria
+Story points / complexity estimate
+Linked stories or epics (for context)
+Attachments (wireframes, specs)
+2. UI Application
+Tech stack options:
+Approach	Stack	Best for
+Quick MVP	Streamlit (Python)	Internal tools, rapid prototyping
+Production-ready	React + Node.js	Scalable team tools
+Low-code	Retool / Appsmith	Fast enterprise deployment
+Core UI components:
+Sprint selector dropdown (populated from Jira)
+Story list with filters (status, assignee, type)
+Story detail preview panel
+"Generate Code" action button
+Progress/status dashboard
+Review & approval interface before commit
+3. AI Code Generation Engine (The Hard Part)
+This is where the complexity lives. You have several approaches:
+Option A: LLM-Based Agent (Most Common)
+
+
+Story → Prompt Engineering → LLM (GPT-4/Claude) → Generated Code
+Option B: Agentic Framework Use frameworks designed for multi-step coding tasks:
+Devin-like agents: OpenDevin, SWE-Agent
+LangChain/LangGraph: For orchestrating multi-step reasoning
+AutoGen: Microsoft's multi-agent framework
+What the code generator needs:
+Context injection — Feed the AI:
+Existing codebase structure (file tree)
+Relevant existing code files
+Coding standards/style guides
+Tech stack constraints (React, Angular, etc.)
+Prompt template example:
+
+
+You are a senior developer. Given this Jira story:
+Title: {title}
+Description: {description}
+Acceptance Criteria: {criteria}
+Existing codebase context:
+{relevant_files}
+Generate production-ready code following our standards:
+{coding_standards}
+Iterative refinement loop — The AI should:
+Generate initial code
+Run linters/static analysis
+Fix issues
+Repeat until clean
+4. Automated Testing
+Generate tests alongside code:
+Test Type	Tools	Automation Approach
+Unit tests	Jest, pytest, JUnit	AI generates with code
+Integration	Cypress, Playwright	AI creates from acceptance criteria
+Static analysis	ESLint, SonarQube	Run in pipeline
+Validation pipeline:
+
+
+Generated Code → Lint → Unit Tests → Build → Integration Tests
+The AI should generate tests based on acceptance criteria in the Jira story.
+5. Bitbucket Integration
+What you need:
+Bitbucket App Password or OAuth token
+Repository write access
+Key API calls:
+python
+
+
+# Create a new branch
+POST /2.0/repositories/{workspace}/{repo}/refs/branches
+# Commit files
+POST /2.0/repositories/{workspace}/{repo}/src
+# Create pull request
+POST /2.0/repositories/{workspace}/{repo}/pullrequests
+Recommended workflow:
+Create feature branch (feature/JIRA-123-login-page)
+Commit generated code
+Create draft PR (not auto-merge!)
+Link PR back to Jira story
+Notify team for human review
+6. Full System Architecture
+
+
+┌─────────────────────────────────────────────────────────────────┐
+│                         UI Application                          │
+│  (React/Streamlit)                                              │
+│  - Sprint/Story selector                                        │
+│  - Progress dashboard                                           │
+│  - Code preview & approval                                      │
+└───────────────────────────┬─────────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    Orchestration Service                        │
+│  (Python/Node.js backend)                                       │
+│  - Job queue (Celery/Bull)                                      │
+│  - Workflow state machine                                       │
+│  - Retry/error handling                                         │
+└───────────────────────────┬─────────────────────────────────────┘
+                            │
+        ┌───────────────────┼───────────────────┐
+        ▼                   ▼                   ▼
+┌───────────────┐   ┌───────────────┐   ┌───────────────┐
+│   Jira API    │   │   AI Engine   │   │ Bitbucket API │
+│               │   │ (LLM + Agent) │   │               │
+│ - Fetch story │   │ - Parse story │   │ - Create branch│
+│ - Get context │   │ - Generate    │   │ - Commit code │
+│ - Update status│  │ - Test        │   │ - Create PR   │
+└───────────────┘   │ - Validate    │   └───────────────┘
+                    └───────────────┘
+7. Tech Stack Recommendation
+For a working MVP:
+Component	Recommendation
+UI	Streamlit (fastest to build)
+Backend	Python + FastAPI
+AI Engine	Claude API or GPT-4 + LangChain
+Job Queue	Celery + Redis
+Database	PostgreSQL (track jobs, history)
+Codebase Indexing	Vector DB (Pinecone/Chroma) for context retrieval
+8. Critical Considerations
+Human-in-the-loop is essential. Never auto-merge AI-generated code to main branches. The workflow should be:
+AI generates code → Creates draft PR → Human reviews → Human merges
+Codebase context matters more than the LLM. The quality of generated code depends heavily on how well you feed existing code patterns, architecture, and standards to the AI. Consider using:
+RAG (Retrieval Augmented Generation) over your codebase
+Fine-tuning on your existing code style
+Start small. Begin with low-complexity stories (simple UI components, CRUD operations) before tackling complex features.
+Error handling. AI will fail. Build robust retry logic, fallback to human assignment, and clear failure notifications.
+9. MVP Implementation Roadmap
+Phase	Deliverable	Timeline
+1	Jira API integration + story fetching	Week 1
+2	Basic UI with story selector	Week 1-2
+3	LLM prompt engineering for code generation	Week 2-3
+4	Test generation + validation pipeline	Week 3-4
+5	Bitbucket integration (branch + PR creation)	Week 4-5
+6	End-to-end workflow testing	Week 5-6
+Where do you want to start? I can dive deeper into any of these components—Jira API setup, the AI code generation prompts, or the Bitbucket commit workflow. Also worth mentioning: what's your tech stack for the codebase being generated (React, Angular, Python backend, etc.)? That'll shape the code generation approach significantly.
+
+
+
+when I select a jira from the UI where is the actual code is getting generated. for example currently I code in viscose and then push to bitbucket.
+
+I would love to answer this. Please upgrade to Pro to access premium AI models, image generation, file analysis, and much more.
+Upgrade
+
+
