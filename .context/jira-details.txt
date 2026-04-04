@@ -1,0 +1,20 @@
+# JIRA Ticket Details (Fetched via MCP)
+# 
+# This file is populated automatically by the JIRA Validator duty via MCP server.
+#
+# Format (auto-populated by MCP):
+# Key: TICKET-KEY
+# Title: Feature Title
+# Description: Detailed feature description
+# Acceptance Criteria:
+#   - Criterion 1
+#   - Criterion 2
+# Components: ComponentA, ComponentB
+# API Endpoints: /api/endpoint1, /api/endpoint2
+# Priority: High/Medium/Low
+# Assignee: Developer Name
+# Status: In Progress/To Do/Done
+#
+# ============================================
+# LEAVE EMPTY IF NO JIRA ACCESS
+# ============================================
